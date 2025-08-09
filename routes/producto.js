@@ -62,9 +62,28 @@ router.delete("/producto/:id", async (req, res) => {
     }
 });
 
+router.put("/producto/:id/agotado", async (req, res) => {
+    try {
+        const producto = await ModelProducto.findById(req.params.id);
+        if (!producto) {
+            return res.status(404).send({ mensaje: "Producto no encontrado" });
+        }
+
+     producto.estado = "agotado";
+     producto.fechaVenta = new Date();
+
+    
+     await producto.save();
+            res.status(200).send(producto);
+    } catch (error) {
+        res.status(500).send({ mensaje: "Error al marcar el producto como agotado", error });
+    }
+    });
+
+
+    
+
+
 module.exports = router;
-
-
-
 
 
